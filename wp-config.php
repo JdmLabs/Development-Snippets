@@ -7,7 +7,7 @@
  * installation. You don't have to use the web site, you can just copy this file
  * to "wp-config.php" and fill in the values.
  *
- * @category WordPress
+ * @category Configuration
  * @package  WordPress
  * @author   2013 by the contributors <info@wordpress.org>
  * @author   2013 Jason D. Moss <jason@jdmlabs.com>
