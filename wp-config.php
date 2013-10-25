@@ -197,8 +197,8 @@ switch ($_SERVER['SERVER_NAME']) {
         /**
          * Must-Use Plug-ins directory
          */
-        define('WPMU_PLUGIN_DIR', dirname(__FILE__) .'/wp-content/mu-plugins');
-        define('WPMU_PLUGIN_URL', $host .'/wp-content/mu-plugins');
+        define('WPMU_PLUGIN_DIR', dirname(__FILE__) .'/wp-content/autoload');
+        define('WPMU_PLUGIN_URL', $host .'/wp-content/autoload');
 
 
         /**
@@ -304,8 +304,8 @@ switch ($_SERVER['SERVER_NAME']) {
         /**
          * Must-Use Plug-ins directory
          */
-        define('WPMU_PLUGIN_DIR', dirname(__FILE__) .'/wp-content/mu-plugins');
-        define('WPMU_PLUGIN_URL', $host .'/wp-content/mu-plugins');
+        define('WPMU_PLUGIN_DIR', dirname(__FILE__) .'/wp-content/autoload');
+        define('WPMU_PLUGIN_URL', $host .'/wp-content/autoload');
 
 
         /**
