@@ -43,7 +43,7 @@ switch ($_SERVER['SERVER_NAME']) {
      *
      * -------------------------------------------------------------------------
      */
-    case 'LOCALHOST.dev':
+    case '_LOCALHOST_.dev':
 
         /**
          * Database
