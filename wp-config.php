@@ -48,11 +48,11 @@ switch ($_SERVER['SERVER_NAME']) {
         /**
          * Database
          */
-        define('DB_NAME', 'DATABASE');
-        define('DB_USER', 'USER');
-        define('DB_PASSWORD', 'PASSWORD');
-        define('DB_HOST', '127.0.0.1');
-        define('DB_CHARSET', 'utf8');
+        define('DB_NAME', getenv('DB_NAME'));
+        define('DB_USER', getenv('DB_USER'));
+        define('DB_PASSWORD', getenv('DB_PASSWORD'));
+        define('DB_HOST', getenv('DB_HOST'));
+        define('DB_CHARSET', getenv('DB_CHARSET'));
         define('DB_COLLATE', '');
 
 
@@ -154,11 +154,11 @@ switch ($_SERVER['SERVER_NAME']) {
         /**
          * Database
          */
-        define('DB_NAME', 'DATABASE');
-        define('DB_USER', 'USER');
-        define('DB_PASSWORD', 'PASSWORD');
-        define('DB_HOST', '0.0.0.0');   // Remote DEVELOPMENT database
-        define('DB_CHARSET', 'utf8');
+        define('DB_NAME', getenv('DB_NAME'));
+        define('DB_USER', getenv('DB_USER'));
+        define('DB_PASSWORD', getenv('DB_PASSWORD'));
+        define('DB_HOST', getenv('DB_HOST'));
+        define('DB_CHARSET', getenv('DB_CHARSET'));
         define('DB_COLLATE', '');
 
 
@@ -261,11 +261,11 @@ switch ($_SERVER['SERVER_NAME']) {
         /**
          * DATABASE
          */
-        define('DB_NAME', 'DATABASE');
-        define('DB_USER', 'USER');
-        define('DB_PASSWORD', 'PASSWORD');
-        define('DB_HOST', '1.1.1.1');  // Remote PRODUCTION Database
-        define('DB_CHARSET', 'utf8');
+        define('DB_NAME', getenv('DB_NAME'));
+        define('DB_USER', getenv('DB_USER'));
+        define('DB_PASSWORD', getenv('DB_PASSWORD'));
+        define('DB_HOST', getenv('DB_HOST'));
+        define('DB_CHARSET', getenv('DB_CHARSET'));
         define('DB_COLLATE', '');
 
 
