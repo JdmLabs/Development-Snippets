@@ -3,65 +3,78 @@
 /**
  * The base configurations of the WordPress.
  *
- * This file is used by the wp-config.php creation script during the
- * installation. You don't have to use the web site, you can just copy this file
- * to "wp-config.php" and fill in the values.
- *
  * @category Configuration
  * @package  WordPress
  * @author   2013 by the contributors <info@wordpress.org>
  * @author   2013 Jason D. Moss <jason@jdmlabs.com>
  * @license  /license.txt [GPL License]
  * @link     http://codex.wordpress.org/Editing_wp-config.php
+ * @link     https://github.com/jasondmoss/Development-Snippets
+ *
+ * ----------------------------------------------------------------------------|
+ *
+ * Set your environment variables in your .htaccess file per host:
+ *
+ *    SetEnv DB_NAME dbname
+ *    SetEnv DB_USER dbuser
+ *    SetEnv DB_PASSWORD dbpass
+ *    SetEnv DB_HOST 127.0.0.1
+ *    SetEnv DB_CHARSET utf8
+ *    SetEnv DB_PREFIX myprefix_
+ *
+ *    # (dev-local, dev-remote, stage, production)
+ *    SetEnv ENVIRONMENT dev-local
  */
 
 if (! defined('__DIR__')) {
     define('__DIR__', dirname(__FILE__));
 }
 
+if (! defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+
 if (! defined('ABSPATH')) {
     define('ABSPATH', dirname(__FILE__) .'/');
 }
 
-
 /**
- * Dynamically set the host
+ * Dynamically set the home/site URLs
  */
-$host = 'http'. ((isset($_SERVER['HTTPS'])) ? 's' : '') .'://'. $_SERVER['SERVER_NAME'];
+$host = 'http'. ((isset($_SERVER['HTTPS']))? 's' : '') .'://'.
+    $_SERVER['SERVER_NAME'];
 
 define('WP_HOME', $host);
-define('WP_SITEURL', $host);
+define('WP_SITEURL', $host .'/system');
 
+/**
+ * Database
+ */
+define('DB_NAME', getenv('DB_NAME'));
+define('DB_USER', getenv('DB_USER'));
+define('DB_PASSWORD', getenv('DB_PASSWORD'));
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_CHARSET', getenv('DB_CHARSET'));
+define('DB_COLLATE', '');
+
+$table_prefix  = getenv('DB_PREFIX');
+
+define('ENVIRONMENT', getenv('ENVIRONMENT'));
 
 /**
  * Environment-based configurations
  */
-switch ($_SERVER['SERVER_NAME']) {
+switch (ENVIRONMENT) {
 
     /**
-     * DEVELOPMENT (LOCALHOST)
-     *
-     * -------------------------------------------------------------------------
+     * DEVELOPMENT (Local/Remote)
+     * ------------------------------------------------------------------------|
      */
-    case '_LOCALHOST_.dev':
-
-        /**
-         * Database
-         */
-        define('DB_NAME', getenv('DB_NAME'));
-        define('DB_USER', getenv('DB_USER'));
-        define('DB_PASSWORD', getenv('DB_PASSWORD'));
-        define('DB_HOST', getenv('DB_HOST'));
-        define('DB_CHARSET', getenv('DB_CHARSET'));
-        define('DB_COLLATE', '');
-
-
-        /**
-         * Debugging
-         */
+    case 'dev-local':
+    case 'dev-remote':
 
         // Enable full PHP error reporting
-        error_reporting(E_ALL);
+        error_reporting(-1);
 
         // Enable WP debugging
         define('WP_DEBUG', true);
@@ -87,191 +100,38 @@ switch ($_SERVER['SERVER_NAME']) {
         // Gzip all HTTP requests
         define('ENFORCE_GZIP', false);
 
+        // wp_content directory
+        define('WP_CONTENT_DIR', dirname(dirname(__FILE__)));
+        define('WP_CONTENT_URL', $host);
 
-        /**
-         * Must-Use Plug-ins directory
-         */
-        define('WPMU_PLUGIN_DIR', dirname(__FILE__) .'/wp-content/autoload');
-        define('WPMU_PLUGIN_URL', $host .'/wp-content/autoload');
+        // Custom plug-ins directory
+        define('WP_PLUGIN_DIR', WP_CONTENT_DIR .'/extend');
+        define('WP_PLUGIN_URL', WP_CONTENT_URL .'/extend');
 
+        // Backwards compatibility for outdated/poorly written plug-ins
+        define('PLUGINDIR', WP_CONTENT_DIR .'/extend');
 
-        /**
-         * Relocate and rename the "uploads" directory
-         */
-        define('UPLOADS', 'media');
+        // Must-use plug-ins directory
+        define('WPMU_PLUGIN_DIR', WP_CONTENT_DIR .'/autoload');
+        define('WPMU_PLUGIN_URL', WP_CONTENT_URL .'/autoload');
 
+        //define('UPLOADS', '/media');
 
-        /**
-         * Disable WordPress core/plugins updating and file editing
-         *
-         * To maintain proper security practices and for clean Version Control,
-         * this should _always_ be set to true ...
-         */
+        // Disable WordPress core/plugins updating and file editing
         define('DISALLOW_FILE_MODS', true);
 
+        // Number of Post Revisions to store
+        define('WP_POST_REVISIONS', 5);
 
-        /**
-         * Number of Post Revisions to store
-         */
-        define('WP_POST_REVISIONS', 3);
-
-
-        /**
-         * AUTOMATICALLY EMPTY THE TRASH
-         */
-        define('EMPTY_TRASH_DAYS', 30);  // 30 days
-
-
-        /**
-         * Environment
-         */
-        define('ENVIRONMENT', 'local');
-
-
-        /**
-         * WordPress Localized Language, defaults to English.
-         */
-        define('WPLANG', '');
-
-
-        /**
-         * WordPress Database Table prefix.
-         *
-         * You can have multiple installations in one database if you give each
-         * a unique prefix. Only numbers, letters, and underscores please!
-         */
-        $table_prefix  = 'wp_';
         break;
 
-
     /**
-     * DEVELOPMENT (REMOTE)
-     *
-     * -------------------------------------------------------------------------
+     * Staging/Production
+     * ------------------------------------------------------------------------|
      */
-    case '0.0.0.0':
-
-        /**
-         * Database
-         */
-        define('DB_NAME', getenv('DB_NAME'));
-        define('DB_USER', getenv('DB_USER'));
-        define('DB_PASSWORD', getenv('DB_PASSWORD'));
-        define('DB_HOST', getenv('DB_HOST'));
-        define('DB_CHARSET', getenv('DB_CHARSET'));
-        define('DB_COLLATE', '');
-
-
-        /**
-         * Debugging
-         */
-
-        // Enable full PHP error reporting
-        error_reporting(-1);
-
-        // Enable WP debugging
-        define('WP_DEBUG', false);
-
-        // Enable Script debugging
-        define('SCRIPT_DEBUG', true);
-
-        // Display WP debugging warnings and errors
-        define('WP_DEBUG_DISPLAY', true);
-
-        // Save database queries to an array for analysis
-        define('SAVEQUERIES', true);
-
-        // Contatenate (combine) JS files
-        define('CONCATENATE_SCRIPTS', false);
-
-        // Compress JS files
-        define('COMPRESS_SCRIPTS', false);
-
-        // Compress CSS files
-        define('COMPRESS_CSS', false);
-
-        // Gzip all HTTP requests
-        define('ENFORCE_GZIP', false);
-
-
-        /**
-         * Must-Use Plug-ins directory
-         */
-        define('WPMU_PLUGIN_DIR', dirname(__FILE__) .'/wp-content/autoload');
-        define('WPMU_PLUGIN_URL', $host .'/wp-content/autoload');
-
-
-        /**
-         * Relocate and rename the "uploads" directory
-         */
-        define('UPLOADS', 'media');
-
-
-        /**
-         * Disable WordPress core/plugins updating and file editing
-         *
-         * To maintain proper security practices and for clean Version Control,
-         * this should _always_ be set to true ...
-         */
-        define('DISALLOW_FILE_MODS', true);
-
-
-        /**
-         * Number of Post Revisions to store
-         */
-        define('WP_POST_REVISIONS', 3);
-
-
-        /**
-         * AUTOMATICALLY EMPTY THE TRASH
-         */
-        define('EMPTY_TRASH_DAYS', 30);  // 30 days
-
-
-        /**
-         * Environment
-         */
-        define('ENVIRONMENT', 'development');
-
-
-        /**
-         * WordPress Localized Language, defaults to English.
-         */
-        define('WPLANG', '');
-
-
-        /**
-         * WordPress Database Table prefix.
-         *
-         * You can have multiple installations in one database if you give each
-         * a unique prefix. Only numbers, letters, and underscores please!
-         */
-        $table_prefix  = 'wp_';
-        break;
-
-
-    /**
-     * PRODUCTION
-     *
-     * -------------------------------------------------------------------------
-     */
-    case '1.1.1.1':
+    case 'stage':
+    case 'production':
     default:
-
-        /**
-         * DATABASE
-         */
-        define('DB_NAME', getenv('DB_NAME'));
-        define('DB_USER', getenv('DB_USER'));
-        define('DB_PASSWORD', getenv('DB_PASSWORD'));
-        define('DB_HOST', getenv('DB_HOST'));
-        define('DB_CHARSET', getenv('DB_CHARSET'));
-        define('DB_COLLATE', '');
-
-
-        /**
-         * Debugging
-         */
 
         // Disable full PHP error reporting
         error_reporting(0);
@@ -282,7 +142,7 @@ switch ($_SERVER['SERVER_NAME']) {
         // Disable Script debugging
         define('SCRIPT_DEBUG', false);
 
-        // Do not display WP debugging warnings and errors
+        // Display WP debugging warnings and errors
         define('WP_DEBUG_DISPLAY', false);
 
         // Save database queries to an array for analysis
@@ -300,62 +160,31 @@ switch ($_SERVER['SERVER_NAME']) {
         // Gzip all HTTP requests
         define('ENFORCE_GZIP', true);
 
+        // wp_content directory
+        define('WP_CONTENT_DIR', dirname(dirname(__FILE__)));
+        define('WP_CONTENT_URL', $host);
 
-        /**
-         * Must-Use Plug-ins directory
-         */
-        define('WPMU_PLUGIN_DIR', dirname(__FILE__) .'/wp-content/autoload');
-        define('WPMU_PLUGIN_URL', $host .'/wp-content/autoload');
+        // Custom plug-ins directory
+        define('WP_PLUGIN_DIR', WP_CONTENT_DIR .'/extend');
+        define('WP_PLUGIN_URL', WP_CONTENT_URL .'/extend');
 
+        // Backwards compatibility for outdated/poorly written plug-ins
+        define('PLUGINDIR', WP_CONTENT_DIR .'/extend');
 
-        /**
-         * Relocate and rename the "uploads" directory
-         */
-        define('UPLOADS', 'media');
+        // Must-use plug-ins directory
+        define('WPMU_PLUGIN_DIR', WP_CONTENT_DIR .'/autoload');
+        define('WPMU_PLUGIN_URL', WP_CONTENT_URL .'/autoload');
 
+        //define('UPLOADS', '/media');
 
-        /**
-         * Disable WordPress core/plugins updating and file editing
-         *
-         * To maintain proper security practices and for clean Version Control,
-         * this should _always_ be set to true ...
-         */
+        // Disable WordPress core/plugins updating and file editing
         define('DISALLOW_FILE_MODS', true);
 
+        // Number of Post Revisions to store
+        define('WP_POST_REVISIONS', 5);
 
-        /**
-         * Number of Post Revisions to store
-         */
-        define('WP_POST_REVISIONS', 3);
-
-
-        /**
-         * Automatically empty the trash
-         */
-        define('EMPTY_TRASH_DAYS', 30);  // 30 days
-
-
-        /**
-         * Environment
-         */
-        define('ENVIRONMENT', 'production');
-
-
-        /**
-         * WordPress Localized Language, defaults to English.
-         */
-        define('WPLANG', '');
-
-
-        /**
-         * WordPress Database Table prefix.
-         *
-         * You can have multiple installations in one database if you give each
-         * a unique prefix. Only numbers, letters, and underscores please!
-         */
-        $table_prefix  = 'wp_';
+        break;
 }
-
 
 /**
  * Authentication Unique Keys and Salts.
@@ -365,15 +194,17 @@ switch ($_SERVER['SERVER_NAME']) {
  *
  * @link https://api.wordpress.org/secret-key/1.1/salt/
  */
-define('AUTH_KEY', '');
-define('SECURE_AUTH_KEY', '');
-define('LOGGED_IN_KEY', '');
-define('NONCE_KEY', '');
-define('AUTH_SALT', '');
-define('SECURE_AUTH_SALT', '');
-define('LOGGED_IN_SALT', '');
-define('NONCE_SALT', '');
+define('AUTH_KEY',         'unique-key');
+define('SECURE_AUTH_KEY',  'unique-key');
+define('LOGGED_IN_KEY',    'unique-key');
+define('NONCE_KEY',        'unique-key');
+define('AUTH_SALT',        'unique-key');
+define('SECURE_AUTH_SALT', 'unique-key');
+define('LOGGED_IN_SALT',   'unique-key');
+define('NONCE_SALT',       'unique-key');
 
+// WordPress Localized Language, defaults to English.
+define('WPLANG', '');
 
 /**
  * Sets up WordPress vars and included files.
