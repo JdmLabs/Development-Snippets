@@ -94,12 +94,6 @@ define('WPMU_PLUGIN_URL', WP_CONTENT_URL .'/autoload');
 // This path can _not_ be absolute. It is always relative to ABSPATH
 define('UPLOADS', dirname(dirname(__FILE__)) .'/media');
 
-// Multisite
-//define('MULTISITE', 1);
-
-// Caching
-//define('WP_CACHE', 1);
-
 // Disable WordPress core/plugins file editing (Security purposes)
 define('DISALLOW_FILE_EDIT', 1);
 
@@ -120,6 +114,13 @@ switch (ENVIRONMENT) {
      */
     case 'dev-local':
     case 'dev-remote':
+
+        // Multisite
+        define('MULTISITE', 0);
+
+        // Caching
+        define('WP_CACHE', 0);
+
 
         /**
          * DEBUG WARNING:
@@ -171,6 +172,13 @@ switch (ENVIRONMENT) {
     case 'staging':
     case 'production':
     default:
+
+        // Multisite
+        define('MULTISITE', 0);
+
+        // Caching
+        define('WP_CACHE', 1);
+
 
         // Disable full PHP error reporting
         error_reporting(0);
