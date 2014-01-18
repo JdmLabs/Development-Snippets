@@ -28,10 +28,10 @@ if (! defined('ABSPATH')) {
 $host = 'http'. ((isset($_SERVER['HTTPS']))? 's' : '') .'://'.
     $_SERVER['SERVER_NAME'];
 
-// Blog URL
+// Blog Base URL
 define('WP_HOME', $host);
 
-// WordPress Administration URL
+// WordPress Administration Base URL
 define('WP_SITEURL', $host .'/system');
 
 
@@ -67,16 +67,16 @@ define('ENVIRONMENT', getenv('ENVIRONMENT'));
  *    {WEBROOT}                         ==>  Set as wp-content (/var/www OR /var/www/WORDPRESS_DIR/, etc.)
  *      -- /autoload                    ==>  Must-use Plugins (mu-plugins)
  *      -- /cache                       ==>  Cache
- *      -- /extend                      ==>  Plug-ins
- *      -- /media                       ==>  Uploads
+ *      -- /extend                      ==>  Plug-ins (plugins)
+ *      -- /media                       ==>  Uploads (uploads)
  *      -- /system                      ==>  WordPress Core Files
  *          -- /wp-admin
  *          -- /wp-includes
  *          -- wp-config.php            ==>  WordPress config (This file)
  *          -- ...                      ==>  All other WordPress core files
  *      -- /themes                      ==>  Themes
- *      -- /.htaccess
- *      -- /index.php
+ *      -- .htaccess
+ *      -- index.php
  */
 
 // "wp-content" directory
