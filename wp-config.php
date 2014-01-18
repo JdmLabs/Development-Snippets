@@ -57,7 +57,6 @@ define('DB_COLLATE', '');
 
 $table_prefix  = getenv('DB_PREFIX');
 
-// Environment
 define('ENVIRONMENT', getenv('ENVIRONMENT'));
 
 
