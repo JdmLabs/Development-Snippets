@@ -177,7 +177,7 @@ switch (ENVIRONMENT) {
         define('MULTISITE', 0);
 
         // Caching
-        define('WP_CACHE', 1);
+        define('WP_CACHE', 0);
 
 
         // Disable full PHP error reporting
