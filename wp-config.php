@@ -25,7 +25,7 @@ if (! defined('ABSPATH')) {
 }
 
 // Dynamically set the home/site URLs
-$host = 'http'. ((isset($_SERVER['HTTPS']))? 's' : '') .'://'.
+$host = 'http'. ((isset($_SERVER['HTTPS'])) ? 's' : '') .'://'.
     $_SERVER['SERVER_NAME'];
 
 // Blog Base URL
