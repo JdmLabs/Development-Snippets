@@ -5,6 +5,7 @@
  *
  * @category Configuration
  * @package  WordPress
+ * 
  * @author   2014 by the contributors <info@wordpress.org>
  * @author   Jason D. Moss <jason@jdmlabs.com>
  * @license  http://files.jdmlabs.com/license/license-GPL-2.0.txt [GPL 2.0 License]
