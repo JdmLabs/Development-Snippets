@@ -7,7 +7,7 @@
  * @package  WordPress
  * 
  * @author   2014 by the contributors <info@wordpress.org>
- * @author   Jason D. Moss <jason@jdmlabs.com>
+ * @author   2001-2014 Jason D. Moss <jason@jdmlabs.com>
  * @license  http://files.jdmlabs.com/license/license-GPL-2.0.txt [GPL 2.0 License]
  * @link     http://codex.wordpress.org/Editing_wp-config.php
  * @link     https://github.com/jasondmoss/development-snippets
