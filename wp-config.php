@@ -92,8 +92,8 @@ define('WPMU_PLUGIN_DIR', WP_CONTENT_DIR .'/autoload');
 define('WPMU_PLUGIN_URL', WP_CONTENT_URL .'/autoload');
 
 // "uploads" directory
-// This path can _not_ be absolute. It is always relative to ABSPATH
-define('UPLOADS', dirname(dirname(__FILE__)) .'/media');
+// This path can _NOT_ be absolute. It is always relative to ABSPATH
+define('UPLOADS', '../media');
 
 // Disable WordPress core/plugins file editing (Security purposes)
 define('DISALLOW_FILE_EDIT', 1);
