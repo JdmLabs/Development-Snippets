@@ -15,7 +15,9 @@
  * You can find more information by visiting the Editing wp-config.php Codex
  * page.
  *
- * @see http://codex.wordpress.org/Editing_wp-config.php
+ * @see  http://codex.wordpress.org/Editing_wp-config.php
+ *
+ * @link  https://github.com/jasondmoss/Development-Snippets/blob/master/wp-config.php
  */
 
 
