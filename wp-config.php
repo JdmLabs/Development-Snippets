@@ -1,243 +1,379 @@
 <?php
 
 /**
- * The base configurations of WordPress.
+ * The base configurations for WordPress.
  *
- * @category Configuration
- * @package  WordPress
- * 
- * @author   2014 by the contributors <info@wordpress.org>
- * @author   2006-2014 Jason D. Moss <jason@jdmlabs.com>
- * @license  http://files.jdmlabs.com/license/license-GPL-2.0.txt [GPL 2.0 License]
- * @link     http://codex.wordpress.org/Editing_wp-config.php
- * @link     https://github.com/jasondmoss/development-snippets
+ * This file has the following configurations:
+ *   -  MySQL settings
+ *   -  Table Prefix
+ *   -  Secret Keys
+ *   -  WordPress Language
+ *   -  Development/Debugging
+ *   -  Environment settings
+ *   -  Path/URL definitions (DIR, ABSPATH, HOME, CDN)
+ *
+ * You can find more information by visiting the Editing wp-config.php Codex
+ * page.
+ *
+ * @see http://codex.wordpress.org/Editing_wp-config.php
  */
 
-if (! defined('__DIR__')) {
-    define('__DIR__', dirname(__FILE__));
-}
 
-if (! defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
+defined('__DIR__') || define('__DIR__', dirname(__FILE__));
+defined('__DS__') || define('__DS__', DIRECTORY_SEPARATOR);
+defined('ABSPATH') || define('ABSPATH', dirname(__FILE__) .'/');
 
-if (! defined('ABSPATH')) {
-    define('ABSPATH', dirname(__FILE__) .'/');
-}
 
-// Dynamically set the home/site URLs
-$host = 'http'. ((isset($_SERVER['HTTPS'])) ? 's' : '') .'://'.
-    $_SERVER['SERVER_NAME'];
+/**
+ * Increase memory allocated to PHP.
+ */
+define('WP_MEMORY_LIMIT', '96M');
 
-// Blog Base URL
+
+/**
+ * Automatic Database Optimizing.
+ */
+define('WP_ALLOW_REPAIR', true);
+
+
+/**
+ * Dynamically set the home/site URLs.
+ *
+ * This may need to be removed for some unique server set-ups (eg. Proxies).
+ */
+$host = 'http'. ((isset($_SERVER['HTTPS']))? 's' : '') .'://'. $_SERVER['SERVER_NAME'];
 define('WP_HOME', $host);
-
-// WordPress Administration Base URL
-define('WP_SITEURL', $host .'/system');
+define('WP_SITEURL', $host);
 
 
 /**
- * Set your environment variables in your .htaccess file, per host:
- *
- *    SetEnv DB_NAME dbname
- *    SetEnv DB_USER dbuser
- *    SetEnv DB_PASSWORD dbpass
- *    SetEnv DB_HOST 127.0.0.1
- *    SetEnv DB_CHARSET utf8
- *    SetEnv DB_PREFIX myprefix_
- *
- *    # (dev-local, dev-remote, staging, production)
- *    SetEnv ENVIRONMENT dev-local
+ * Database credentials/details.
  */
-define('DB_NAME', getenv('DB_NAME'));
-define('DB_USER', getenv('DB_USER'));
-define('DB_PASSWORD', getenv('DB_PASSWORD'));
-define('DB_HOST', getenv('DB_HOST'));
-define('DB_CHARSET', getenv('DB_CHARSET'));
-define('DB_COLLATE', '');
+define('DB_NAME', '');
+define('DB_USER', '');
+define('DB_PASSWORD', '');
+define('DB_HOST', 'localhost');
+define('DB_CHARSET', 'utf8');
+define('DB_COLLATE', 'utf8_general_ci');
+$table_prefix  = 'unique__';
 
-$table_prefix  = getenv('DB_PREFIX');
-
-define('ENVIRONMENT', getenv('ENVIRONMENT'));
-
-
-/**
- * Assumed WordPress directory structure:
- *
- *    {WEBROOT}                         ==>  Set as wp-content (/var/www OR /var/www/WORDPRESS_DIR/, etc.)
- *      -- /autoload                    ==>  Must-use Plugins (mu-plugins)
- *      -- /cache                       ==>  Cache
- *      -- /extend                      ==>  Plug-ins (plugins)
- *      -- /media                       ==>  Uploads (uploads)
- *      -- /system                      ==>  WordPress Core Files
- *          -- /wp-admin
- *          -- /wp-includes
- *          -- wp-config.php            ==>  WordPress config (This file)
- *          -- ...                      ==>  All other WordPress core files
- *      -- /themes                      ==>  Themes
- *      -- .htaccess
- *      -- index.php
- */
-
-// "wp-content" directory
-define('WP_CONTENT_DIR', dirname(dirname(__FILE__)));
-define('WP_CONTENT_URL', $host);
-
-// "plugins" directory
-define('WP_PLUGIN_DIR', WP_CONTENT_DIR .'/extend');
-define('WP_PLUGIN_URL', WP_CONTENT_URL .'/extend');
-
-// "mu-plugins" directory
-define('WPMU_PLUGIN_DIR', WP_CONTENT_DIR .'/autoload');
-define('WPMU_PLUGIN_URL', WP_CONTENT_URL .'/autoload');
-
-// "uploads" directory
-// This path can _NOT_ be absolute. It is always relative to ABSPATH
-define('UPLOADS', '../media');
-
-// Disable WordPress core/plugins file editing (Security purposes)
-define('DISALLOW_FILE_EDIT', 1);
-
-// Disable WordPress core/plugins updating (Security purposes)
-define('DISALLOW_FILE_MODS', 1);
-
-// Number of Post Revisions to store (Why need more?)
-define('WP_POST_REVISIONS', 3);
-
-/**
- * Environment-based configurations
- */
-switch (ENVIRONMENT) {
-
-    /**
-     * DEVELOPMENT (Local/Remote)
-     * ------------------------------------------------------------------------|
-     */
-    case 'dev-local':
-    case 'dev-remote':
-
-        // Multisite
-        define('MULTISITE', 0);
-
-        // Caching
-        define('WP_CACHE', 0);
-
-
-        /**
-         * DEBUG WARNING:
-         * .....................................................................
-         *
-         * If you download and install many plug-ins and/or themes from the main
-         * WordPress repository, premium theme/plug-in sites, etc., chances are
-         * you will get a _LOT_ of errors and warnings and deprecation notices
-         * displayed.
-         *
-         * Just saying...
-         */
-
-        // Enable full PHP error reporting (I wish all developers would do this...)
-        error_reporting(-1);
-
-        // Enable WP debugging
-        define('WP_DEBUG', 1);
-
-        // Enable Script debugging
-        define('SCRIPT_DEBUG', 1);
-
-        // Display WP debugging warnings and errors
-        define('WP_DEBUG_DISPLAY', 1);
-
-        // Display RSS debugging warnings and errors
-        define('MAGPIE_DEBUG', 1);
-
-        // Save database queries to an array for analysis
-        define('SAVEQUERIES', 1);
-
-        // Contatenate (combine) JS files
-        define('CONCATENATE_SCRIPTS', 0);
-
-        // Compress JS files
-        define('COMPRESS_SCRIPTS', 0);
-
-        // Compress CSS files
-        define('COMPRESS_CSS', 0);
-
-        // Gzip all HTTP requests
-        define('ENFORCE_GZIP', 0);
-        break;
-
-    /**
-     * Staging/Production
-     * ------------------------------------------------------------------------|
-     */
-    case 'staging':
-    case 'production':
-    default:
-
-        // Multisite
-        define('MULTISITE', 0);
-
-        // Caching
-        define('WP_CACHE', 0);
-
-
-        // Disable full PHP error reporting
-        error_reporting(0);
-
-        // Disable WP debugging
-        define('WP_DEBUG', 0);
-
-        // Disable Script debugging
-        define('SCRIPT_DEBUG', 0);
-
-        // Display WP debugging warnings and errors
-        define('WP_DEBUG_DISPLAY', 0);
-
-        // Display RSS debugging warnings and errors
-        define('MAGPIE_DEBUG', 0);
-
-        // Save database queries to an array for analysis
-        define('SAVEQUERIES', 0);
-
-        // Contatenate (combine) JS files
-        define('CONCATENATE_SCRIPTS', 1);
-
-        // Compress JS files
-        define('COMPRESS_SCRIPTS', 1);
-
-        // Compress CSS files
-        define('COMPRESS_CSS', 1);
-
-        // Gzip all HTTP requests
-        define('ENFORCE_GZIP', 1);
-        break;
-}
 
 /**
  * Authentication Unique Keys and Salts.
  *
- * You can change these at any point in time to invalidate all existing
- * cookies. This will force all users to have to log in again.
- *
  * @link https://api.wordpress.org/secret-key/1.1/salt/
  */
-define('AUTH_KEY', 'put your unique phrase here');
-define('SECURE_AUTH_KEY', 'put your unique phrase here');
-define('LOGGED_IN_KEY', 'put your unique phrase here');
-define('NONCE_KEY', 'put your unique phrase here');
-define('AUTH_SALT', 'put your unique phrase here');
-define('SECURE_AUTH_SALT', 'put your unique phrase here');
-define('LOGGED_IN_SALT', 'put your unique phrase here');
-define('NONCE_SALT', 'put your unique phrase here');
+define('AUTH_KEY', '');
+define('SECURE_AUTH_KEY', '');
+define('LOGGED_IN_KEY', '');
+define('NONCE_KEY', '');
+define('AUTH_SALT', '');
+define('SECURE_AUTH_SALT', '');
+define('LOGGED_IN_SALT', '');
+define('NONCE_SALT', '');
 
-// WordPress Localized Language, defaults to English.
+
+/**
+ * WordPress Localized Language, defaults to English.
+ *
+ * @see  http://wpcentral.io/internationalization/
+ * @see  http://codex.wordpress.org/WordPress_in_Your_Language
+ */
 define('WPLANG', '');
-//define('WPLANG', 'de_DE');  // German
-//define('WPLANG', 'en_GB');  // English (U.K.)
-//define('WPLANG', 'fr_FR');  // French
-//define('WPLANG', 'zh_TW');  // Chinese (Traditional)
+// define('WPLANG', 'cs_CZ');  /* Czech. */
+// define('WPLANG', 'en_GB');  /* English (UK). */
+// define('WPLANG', 'fa_IR');  /* Persian. */
+// define('WPLANG', 'fr_BE');  /* French (Belgium). */
+// define('WPLANG', 'fr_FR');  /* French (France). */
 
-// Sets up WordPress vars and included files.
-require_once ABSPATH .'wp-settings.php';
+
+/**
+ * Force secure connection to the login and adminstration pages.
+ *
+ * Requires SSL configured on the server and a (virtual) host configured for
+ * the secure server.
+ *
+ * @see  http://codex.wordpress.org/Administration_Over_SSL
+ */
+// define('FORCE_SSL_ADMIN', true);
+// define('FORCE_SSL_LOGIN', true);
+
+
+/**
+ * CDN asset base domain URL.
+ *
+ * @example  //unique_bucket_token.cloudfront.net/
+ */
+defined('CDNDOMAIN') ?: define('CDNDOMAIN', null);
+
+
+/**
+ * Disables updates to WordPress core.
+ */
+define('WP_AUTO_UPDATE_CORE', false);
+
+
+/**
+ * Disable WordPress core/plugins file editing.
+ */
+define('DISALLOW_FILE_EDIT', true);
+
+
+/**
+ * Disable WordPress core/plugins updating.
+ */
+define('DISALLOW_FILE_MODS', true);
+
+
+/**
+ * Send media files to the trash instead of immediately deleting. This gives you
+ * the option of 'undo' for trashed media files.
+ */
+define('MEDIA_TRASH', true);
+
+
+/**
+ * Automatically empty trash after these amount of days (default 30).
+ */
+define('EMPTY_TRASH_DAYS', 90);
+
+
+/**
+ * Do not download generic themes with WP upgrades.
+ */
+define('CORE_UPGRADE_SKIP_NEW_BUNDLED', true);
+
+
+/**
+ * Number of Post Revisions to store.
+ */
+define('WP_POST_REVISIONS', 3);
+
+
+/**
+ * Define our server environment.
+ *
+ * This should only really be used/set while developing on your localhost, or
+ * the Rob Ford Development Server (DevX).
+ *
+ *
+ * --------------------------------------------------------------------------- *
+ *  !!!          CHANGE THIS TO '0' ON STAGING/PRODUCTION SERVER          !!!  *
+ * --------------------------------------------------------------------------- *
+ */
+define('DEVELOPMENT', 1);
+/*
+ * --------------------------------------------------------------------------- *
+ *  !!!          CHANGE THIS TO '0' ON STAGING/PRODUCTION SERVER          !!!  *
+ * --------------------------------------------------------------------------- *
+ */
+
+
+/**
+ * Are we currently on Remote or local Development Server? Adjust to your
+ * development server(s) environment(s)/requirements.
+ *
+ * We set this as a global variable so we may query it site-wide through our
+ * custom plug-ins and themes.
+ *
+ * @global  boolean $isDevelopmentServer Development server or not.
+ */
+global $isDevelopmentServer;
+$isDevelopmentServer = (
+
+    /**
+     * If development flag is set.
+     */
+    1 == DEVELOPMENT
+
+    /**
+     * Remote Development IP(s) || Local Server IP.
+     */
+    && ('00.000.00.00' == $_SERVER['SERVER_ADDR']
+        || '11.111.11.11' == $_SERVER['SERVER_ADDR']
+        || '22.222.22.22' == $_SERVER['SERVER_ADDR']
+        || '127.0.0.1' == $_SERVER['SERVER_ADDR']
+    )
+
+    /**
+     * Remote Domain(s) || Local Server Domain.
+     */
+    && ('dev.mydomain.com' == $_SERVER['HOSTNAME']
+        || 'dev1.mydomain.com' == $_SERVER['SERVER_NAME']
+        || 'dev2.mydomain.com' == $_SERVER['SERVER_NAME']
+        || 'localhost.dev' == $_SERVER['SERVER_NAME']
+    )
+);
+
+
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of _ALL_ notices during
+ * the  development phase of your WordPress project.
+ *
+ * It is _STRONGLY_ recommended that _ALL_ plugin and theme developers _ALWAYS_
+ * use these settings in their development environments. It is _YOUR_
+ * responsibility to deliver safe, secure code to (your clients | the public).
+ *
+ * This would _GREATLY_ help in cutting down on all the crap code currently
+ * found in the WordPress Plug-In/Theme Repositories/Communities.
+ */
+if (1 == DEVELOPMENT) {
+
+
+    /**
+     * Development Environment.
+     * ----------------------------------------------------------------------- *
+     */
+
+
+    /**
+     * Disable all caching.
+     */
+    define('ENABLE_CACHE', false);
+    define('WP_CACHE', false);
+
+
+    /**
+     * Fully enable PHP error reporting.
+     */
+    error_reporting(-1);
+
+
+    /**
+     * Enable WordPress Debugging.
+     */
+    define('WP_DEBUG', true);
+
+
+    /*
+     * Enable WordPress Script debugging.
+     */
+    define('SCRIPT_DEBUG', true);
+
+
+    /*
+     * Display all PHP/WordPress debugging warnings and errors on screen.
+     */
+    define('WP_DEBUG_DISPLAY', true);
+
+
+    /**
+     * Display RSS debugging warnings and errors.
+     */
+    define('MAGPIE_DEBUG', true);
+
+
+    /*
+     * Save WordPress database queries to an array for deeper analysis.
+     */
+    define('SAVEQUERIES', true);
+
+
+    /**
+     * Do not contatenate (combine) CSS/JS files.
+     */
+    define('CONCATENATE_SCRIPTS', false);
+
+
+    /**
+     * Do not compress JS files.
+     */
+    define('COMPRESS_SCRIPTS', false);
+
+
+    /**
+     * Do not compress CSS files.
+     */
+    define('COMPRESS_CSS', false);
+
+
+    /**
+     * Do not gzip any HTTP requests.
+     */
+    define('ENFORCE_GZIP', false);
+} else {
+
+
+    /**
+     * Production Environment.
+     * ----------------------------------------------------------------------- *
+     */
+
+
+    /**
+     * Enable caching.
+     */
+    define('ENABLE_CACHE', true);
+    define('WP_CACHE', true);
+
+
+    /**
+     * Fully disable PHP error reporting.
+     */
+    error_reporting(0);
+
+
+    /**
+     * Disable WordPress Debugging.
+     */
+    define('WP_DEBUG', false);
+
+
+    /*
+     * Disable WordPress Script debugging.
+     */
+    define('SCRIPT_DEBUG', false);
+
+
+    /*
+     * Do not display any PHP/WordPress debugging warnings and errors on screen.
+     */
+    define('WP_DEBUG_DISPLAY', false);
+
+
+    /**
+     * Disable RSS debugging warnings and errors.
+     */
+    define('MAGPIE_DEBUG', false);
+
+
+    /*
+     * Do not save WordPress database queries to an array for analysis
+     * (potential security risk).
+     */
+    define('SAVEQUERIES', false);
+
+
+    /**
+     * Contatenate (combine) CSS/JS files.
+     */
+    define('CONCATENATE_SCRIPTS', true);
+
+
+    /**
+     * Compress JS files.
+     */
+    define('COMPRESS_SCRIPTS', true);
+
+
+    /**
+     * Compress CSS files.
+     */
+    define('COMPRESS_CSS', true);
+
+
+    /**
+     * Gzip all HTTP requests.
+     */
+    define('ENFORCE_GZIP', true);
+}
+
+
+/**
+ * Sets up WordPress variables and included files.
+ */
+require_once(ABSPATH .'wp-settings.php');
 
 /* <> */
