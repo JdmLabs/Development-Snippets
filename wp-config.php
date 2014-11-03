@@ -41,7 +41,8 @@ define('WP_ALLOW_REPAIR', true);
 /**
  * Dynamically set the home/site URLs.
  *
- * This may need to be removed for some unique server set-ups (eg. Proxies).
+ * This may need to be removed for some unique server set-ups (eg. when
+ * using reverse proxies).
  */
 $host = 'http'. ((isset($_SERVER['HTTPS']))? 's' : '') .'://'. $_SERVER['SERVER_NAME'];
 define('WP_HOME', $host);
@@ -156,7 +157,7 @@ define('WP_POST_REVISIONS', 3);
  * Define our server environment.
  *
  * This should only really be used/set while developing on your localhost, or
- * the Rob Ford Development Server (DevX).
+ * a remote development server.
  *
  *
  * --------------------------------------------------------------------------- *
@@ -212,14 +213,15 @@ $isDevelopmentServer = (
  * For developers: WordPress debugging mode.
  *
  * Change this to true to enable the display of _ALL_ notices during
- * the  development phase of your WordPress project.
+ * the development phase of your WordPress project.
  *
  * It is _STRONGLY_ recommended that _ALL_ plugin and theme developers _ALWAYS_
  * use these settings in their development environments. It is _YOUR_
  * responsibility to deliver safe, secure code to (your clients | the public).
  *
  * This would _GREATLY_ help in cutting down on all the crap code currently
- * found in the WordPress Plug-In/Theme Repositories/Communities.
+ * found in the WordPress Plug-In/Theme Repositories/Communities. No offense
+ * to any one in particular, my code is not perfect either.
  */
 if (1 == DEVELOPMENT) {
 
