@@ -16,7 +16,6 @@
  * page.
  *
  * @see  http://codex.wordpress.org/Editing_wp-config.php
- *
  * @link  https://github.com/jasondmoss/Development-Snippets/blob/master/wp-config.php
  */
 
@@ -64,7 +63,7 @@ $table_prefix  = 'unique__';
 /**
  * Authentication Unique Keys and Salts.
  *
- * @link https://api.wordpress.org/secret-key/1.1/salt/
+ * @link  https://api.wordpress.org/secret-key/1.1/salt/
  */
 define('AUTH_KEY', '');
 define('SECURE_AUTH_KEY', '');
@@ -179,7 +178,7 @@ define('DEVELOPMENT', 1);
  * We set this as a global variable so we may query it site-wide through our
  * custom plug-ins and themes.
  *
- * @global  boolean $isDevelopmentServer Development server or not.
+ * @global  boolean  $isDevelopmentServer  To be or not to be...
  */
 global $isDevelopmentServer;
 $isDevelopmentServer = (
