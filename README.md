@@ -1,1 +1,1 @@
-Just a personal collection of thisng I find I use on a regular basis; a "closet", if you will.
+Just a personal collection of files, snippets, or procedures I find to be quite useful and often-used; a "junk drawer", if you will.
